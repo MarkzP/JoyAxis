@@ -25,3 +25,6 @@ isCalibrated	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
+AXIS_NORMAL	KEYWORD2
+AXIS_REVERSED	KEYWORD2
+AXIS_SLIDER	KEYWORD2

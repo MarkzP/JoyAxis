@@ -1,10 +1,18 @@
 #ifndef JOYAXIS_H
 #define JOYAXIS_H
 
+#include <stdint.h>
+
 class JoyAxis
 {
     public:
-        JoyAxis(bool reversed = false, bool centered = true, float saturation = 0.95f, float deadzone = 0.001f, float exponential = 1.3f, float smooth = 0.3f, float minPos = 0, float maxPos = 1023.0f);
+		typedef enum {
+			AXIS_NORMAL = 0,
+			AXIS_REVERSED = 1,
+			AXIS_SLIDER = 2
+		} AxisTypes;
+	
+        JoyAxis(uint8_t axisType = AXIS_NORMAL, float saturation = 0.95f, float deadZone = 0.001f, float exponential = 1.3f, float smooth = 0.3f, float minPos = 0, float maxPos = 1023.0f);
 
         void reset();
         float update(float rawValue);
@@ -13,7 +21,7 @@ class JoyAxis
 
     protected:
         bool rev;
-        bool center;
+        bool slider;
         float sat;
         float dz;        
         float expo;

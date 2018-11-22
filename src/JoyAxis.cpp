@@ -1,7 +1,6 @@
 #include "JoyAxis.h"
 
 #include <Arduino.h>
-#include <math.h>
 
 // https://github.com/ekmett/approximate/blob/master/cbits/fast.c
 static float powf_fast(float a, float b) {
@@ -10,24 +9,23 @@ static float powf_fast(float a, float b) {
   return u.d;
 }
 
-JoyAxis::JoyAxis(bool reversed, bool centered, float saturation, float deadzone, float exponential, float smooth, float minPos, float maxPos)
-{
-  rev = reversed;
-  center = centered;
+JoyAxis::JoyAxis(uint8_t axisType, float saturation, float deadZone, float exponential, float smooth, float minPos, float maxPos) {
+  rev = axisType & AXIS_REVERSED;
+  slider = axisType & AXIS_SLIDER;
   sat = constrain(saturation, 0.5f, 1.0f);
-  dz = constrain(deadzone, 0.0f, 1.0f);
+  dz = constrain(deadZone, 0.0f, 1.0f);
   expo = constrain(exponential, 0.0f, 3.0f);
   alpha = constrain(smooth, 0.001f, 1.0f);
   oneMinusAlpha = 1.0f - alpha;
   outputMin = min(minPos, maxPos);
   outputMax = max(minPos, maxPos);
   outputMid = outputMin + ((outputMax - outputMin) * 0.5f);
-  
+
   reset();
 }
 
 void JoyAxis::reset() {
-  
+
   midSampleCount = CALIB_SAMPLES;
   midRange = 0;
   minRange = 3.4028235E+38;
@@ -45,10 +43,10 @@ float JoyAxis::update(float rawValue) {
       // The min & max will be used to determine valid range
       minRange = min(rawValue, minRange);
       maxRange = max(rawValue, maxRange);
-      
+
       midSampleCount--;
       if (midSampleCount == 0) {
-      
+
         midRange /= CALIB_SAMPLES;
 
         // Initialize filter with average value;
@@ -80,14 +78,15 @@ float JoyAxis::update(float rawValue) {
     if ((maxRange - minRange) < minValidRange) return output = outputMid;
 
     float normal = 0.0f;
-    if (center) {
-
+    if (slider) {
+        normal = value - offset;
+    }
+    else {
       // Convert value to -1.0/+1.0 range
       // apply expo as needed
       if (value < lowMid)       normal = -powf_fast((lowMid - value) * lowRange, expo);
       else if (value > highMid) normal = powf_fast((value - highMid) * highRange, expo);
     }
-    else normal = value - offset;
 
     // Scale back to Joystick output range
     output = (normal * scale) + outputMid;
@@ -107,16 +106,16 @@ void JoyAxis::setRanges() {
   float high = maxRange - satoffset;
   float low = minRange + satoffset;
 
-  if (center) {
+  if (slider) {
+    scale = (rev ? -outputRange : outputRange) / (high - low);
+    offset = (inputRange * 0.5f) + minRange;
+  }
+  else {
     lowMid = midRange - dzoffset;
     highMid = midRange + dzoffset;
     lowRange = 1.0f / (lowMid - low);
     highRange = 1.0f / (high - highMid);
     scale = (rev ? -outputRange : outputRange) * 0.5f;
     offset = 0;
-  }
-  else {
-    scale = (rev ? -outputRange : outputRange) / (high - low);
-    offset = (inputRange * 0.5f) + minRange;
   }
 }
