@@ -1,0 +1,16 @@
+{
+  "name": "JoyAxis",
+  "keywords": "joystick, axis",
+  "description": "Joystick Axis library for Arduino or Wiring",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarkzP/JoyAxis"
+  },
+  "version": "1.00",
+  "exclude": [
+    "*.png",
+    "*.zip"
+  ],
+  "frameworks": "arduino",
+  "platforms": "*"
+}
