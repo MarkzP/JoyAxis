@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/MarkzP/JoyAxis"
   },
-  "version": "1.00",
+  "version": "0.00",
   "exclude": [
     "*.png",
     "*.zip"
