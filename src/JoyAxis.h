@@ -6,13 +6,13 @@
 class JoyAxis
 {
     public:
-		typedef enum {
-			AXIS_NORMAL = 0,
-			AXIS_REVERSED = 1,
-			AXIS_SLIDER = 2
-		} AxisTypes;
-	
-        JoyAxis(uint8_t axisType = AXIS_NORMAL, float saturation = 0.95f, float deadZone = 0.001f, float exponential = 1.3f, float smooth = 0.3f, float minPos = 0, float maxPos = 1023.0f);
+        typedef enum {
+            AXIS_NORMAL = 0,
+            AXIS_REVERSED = 1,
+            AXIS_SLIDER = 2
+        } AxisTypes;
+
+        JoyAxis(uint8_t axisType = AXIS_NORMAL, float saturation = 0.95f, float deadZone = 0.001f, float exponential = 1.3f, float smooth = 0.6f, float minPos = 0, float maxPos = 1023.0f);
 
         void reset();
         float update(float rawValue);
@@ -43,7 +43,7 @@ class JoyAxis
         float scale;
         float offset;
         
-		    float minValidRange;
+        float minValidRange;
         float lowRange;
         float lowMid;
         float highRange;
