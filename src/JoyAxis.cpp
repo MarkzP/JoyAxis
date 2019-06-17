@@ -26,6 +26,7 @@ JoyAxis::JoyAxis(uint8_t axisType, float saturation, float deadZone, float expon
 
 void JoyAxis::reset() {
 
+  validRange = false;
   midSampleCount = CALIB_SAMPLES;
   midRange = 0;
   minRange = 3.4028235E+38;
@@ -76,6 +77,8 @@ float JoyAxis::update(float rawValue) {
 
     // Lock output to center if range is insufficient
     if ((maxRange - minRange) < minValidRange) return output = outputMid;
+	
+	validRange = true;
 
     float normal = 0.0f;
     if (slider) {

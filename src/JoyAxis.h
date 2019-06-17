@@ -18,6 +18,7 @@ class JoyAxis
         float update(float rawValue);
         inline float position() { return output; }
         inline bool isCalibrated() { return midSampleCount == 0; }
+		inline bool isRangeValid() { return validRange; }
 
     protected:
         bool rev;
@@ -30,6 +31,7 @@ class JoyAxis
         
         float value;
         int midSampleCount;
+		bool validRange;
         static const int CALIB_SAMPLES = 1024;
         
         float minRange;

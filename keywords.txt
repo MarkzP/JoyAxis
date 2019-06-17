@@ -16,6 +16,7 @@ update	KEYWORD2
 reset	KEYWORD2
 position	KEYWORD2
 isCalibrated	KEYWORD2
+isRangeValid	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
