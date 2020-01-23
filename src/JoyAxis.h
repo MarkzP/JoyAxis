@@ -27,7 +27,6 @@ class JoyAxis
         float dz;        
         float expo;
         float alpha;
-        float oneMinusAlpha;
         
         float value;
         int midSampleCount;

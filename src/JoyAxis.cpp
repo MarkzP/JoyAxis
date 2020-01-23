@@ -16,7 +16,6 @@ JoyAxis::JoyAxis(uint8_t axisType, float saturation, float deadZone, float expon
   dz = constrain(deadZone, 0.0f, 1.0f);
   expo = constrain(exponential, 0.0f, 3.0f);
   alpha = constrain(smooth, 0.001f, 1.0f);
-  oneMinusAlpha = 1.0f - alpha;
   outputMin = min(minPos, maxPos);
   outputMax = max(minPos, maxPos);
   outputMid = outputMin + ((outputMax - outputMin) * 0.5f);
@@ -63,7 +62,7 @@ float JoyAxis::update(float rawValue) {
     }
 
     // Low pass filtering of raw value
-    value = (value * oneMinusAlpha) + (rawValue * alpha);
+	value += alpha * (rawValue - value);
 
     // Update range as needed
     if (value < minRange) {
